@@ -14,6 +14,7 @@
 #include "LED.h"
 #include "Person.h"
 #include <Servo.h>
+#include <LiquidCrystal_I2C.h>
 
 #include "FPS_GT511C3.h"
 #include "SoftwareSerial.h"
@@ -21,21 +22,33 @@ Servo Locker;
 
 FPS_GT511C3 fps(4, 5);
 
+// LCD variables
+int lcdWidth = 20;
+int lcdHeight = 4;
+String message = "";
+LiquidCrystal_I2C lcd(0x3f, 2, 1, 0, 4, 5, 6, 7);
+
+
 
 LED Green = LED(grn);
 
 
 bool isLocked;
 
-Person person = 
+Person person = Person(2, "Jester", "Cornejo");
 
 void setup() {
   //delair servo port
   Locker.attach(lockerS);
+  
   //begin baudrate 9600
   Serial.begin(9600);
+  
   //declair pin modes
   pinMode(3, OUTPUT);
+
+  // LCD setup
+  lcd.begin(lcdWidth, lcdHeight);
 
   Beep(3, 80);
   UnLock();
